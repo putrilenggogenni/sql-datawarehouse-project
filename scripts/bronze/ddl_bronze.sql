@@ -153,7 +153,7 @@ GO
 
 /*
 =================================================================
-Table: bronze.erp_px_CAT_G1V2
+Table: bronze.erp_px_cat_g1v2
 Source: ERP
 Purpose:
     Stores raw product category and maintenance information
@@ -161,11 +161,11 @@ Purpose:
 =================================================================
 */
 
-IF OBJECT_ID('bronze.erp_px_CAT_G1V2', 'U') IS NOT NULL
-	DROP TABLE bronze.erp_px_CAT_G1V2;
+IF OBJECT_ID('bronze.erp_px_cat_g1v2', 'U') IS NOT NULL
+	DROP TABLE bronze.erp_px_cat_g1v2;
 GO
 
-CREATE TABLE bronze.erp_px_CAT_G1V2(
+CREATE TABLE bronze.erp_px_cat_g1v2(
 	id NVARCHAR(50),
 	cat NVARCHAR(50),
 	subcat NVARCHAR(50),
