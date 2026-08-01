@@ -31,7 +31,7 @@ Tables Created:
     ERP:
         - silver.erp_cust_az12
         - silver.erp_loc_a101
-        - silver.erp_px_CAT_G1V2
+        - silver.erp_px_cat_g1v2
 
 Metadata:
     Each Silver table includes 'dwh_create_date' to record the timestamp
@@ -173,7 +173,7 @@ GO
 
 /*
 ===================================================================================================
-Table: silver.erp_px_CAT_G1V2
+Table: silver.erp_px_cat_g1v2
 Source: Bronze ERP
 Purpose:
     Stores cleaned and standardized product category and maintenance
@@ -181,11 +181,11 @@ Purpose:
 ===================================================================================================
 */
 
-IF OBJECT_ID('silver.erp_px_CAT_G1V2', 'U') IS NOT NULL
-	DROP TABLE silver.erp_px_CAT_G1V2;
+IF OBJECT_ID('silver.erp_px_cat_g1v2', 'U') IS NOT NULL
+	DROP TABLE silver.erp_px_cat_g1v2;
 GO
 
-CREATE TABLE silver.erp_px_CAT_G1V2(
+CREATE TABLE silver.erp_px_cat_g1v2(
 	id NVARCHAR(50),
 	cat NVARCHAR(50),
 	subcat NVARCHAR(50),
