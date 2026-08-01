@@ -17,7 +17,6 @@ Process Overview:
     4. Capture and display the execution time for each table load.
     5. Capture and display the total execution time for the complete Bronze load.
     6. Handle unexpected errors using TRY...CATCH.
-    7. Re-throw errors using THROW so the execution is correctly marked as failed.
 
 Source Systems:
     CRM:
@@ -285,9 +284,6 @@ BEGIN
 			+ CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) 
 			+ ' seconds')
 		PRINT('=================================================')
-
-		-- Re-throw the error so the execution is marked as failed
-		THROW;
 
 	END CATCH
 END
