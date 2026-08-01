@@ -146,7 +146,7 @@ BEGIN
 		SET @start_time = GETDATE()
 
 		BULK INSERT bronze.crm_sales_details
-		FROM 'C:\Users\Lenovo\OneDrive\ドокументы\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
+		FROM 'C:\Users\Lenovo\OneDrive\ドキュメント\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR =',',
@@ -202,7 +202,7 @@ BEGIN
 		SET @start_time = GETDATE()
 
 		BULK INSERT bronze.erp_loc_a101
-		FROM 'C:\Users\Lenovo\OneDrive\ドокументы\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
+		FROM 'C:\Users\Lenovo\OneDrive\ドキュメント\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR =',',
@@ -230,7 +230,7 @@ BEGIN
 		SET @start_time = GETDATE()
 
 		BULK INSERT bronze.erp_px_cat_g1v2
-		FROM 'C:\Users\Lenovo\OneDrive\ドокументы\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
+		FROM 'C:\Users\Lenovo\OneDrive\ドキュメント\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR =',',
