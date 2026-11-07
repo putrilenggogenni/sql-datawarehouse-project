@@ -49,25 +49,35 @@ Performance Monitoring:
         - Error details and elapsed time when the load fails.
 
 Parameters:
-    None. This stored procedure does not accept any parameters.
+    @base_path NVARCHAR(500)
+        Full path to the 'dataset' folder that contains the 'source_crm' and
+        'source_erp' sub-folders. The folder must be accessible by the SQL Server
+        service. Default value is a placeholder, so pass your own path when executing.
 
 Usage Example:
-    EXEC bronze.load_bronze;
+    EXEC bronze.load_bronze @base_path = 'C:\path\to\sql-datawarehouse-project\dataset\';
 
 Note:
-    The procedure uses BULK INSERT to load CSV files directly into SQL Server.
-    Ensure that the configured file paths are accessible by the SQL Server instance
-    before executing the procedure.
+    BULK INSERT does not accept a variable as the file name, so each load statement is
+    built as dynamic SQL and executed with sp_executesql.
 ===================================================================================================
 */
 
-CREATE OR ALTER PROCEDURE load_bronze AS
+CREATE OR ALTER PROCEDURE bronze.load_bronze
+	@base_path NVARCHAR(500) = N'C:\path\to\sql-datawarehouse-project\dataset\'
+AS
 BEGIN
 	BEGIN TRY
 		DECLARE @start_time DATETIME, 
 				@end_time DATETIME, 
 				@batch_start_time DATETIME, 
-				@batch_end_time DATETIME
+				@batch_end_time DATETIME,
+				@sql NVARCHAR(MAX)
+
+		-- Make sure the path ends with a backslash and is safe to embed in a string literal
+		SET @base_path = REPLACE(@base_path, '''', '''''')
+		IF RIGHT(@base_path, 1) <> '\'
+			SET @base_path = @base_path + '\'
 
 		PRINT('=================================================')
 		PRINT('PROCEDURE LOAD BRONZE IS ABOUT TO BEGIN...')
@@ -80,7 +90,7 @@ BEGIN
 		/*
 		=================================================================
 		Load Table: bronze.crm_cust_info
-		Source File: cust_info.csv
+		Source File: source_crm\cust_info.csv
 		=================================================================
 		*/
 
@@ -89,13 +99,9 @@ BEGIN
 		PRINT('PROCESSING LOAD RAW DATA TO TABLE...')
 		SET @start_time = GETDATE()
 
-		BULK INSERT bronze.crm_cust_info
-		FROM 'C:\Users\Lenovo\OneDrive\ドキュメント\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
-		WITH (
-			FIRSTROW = 2,
-			FIELDTERMINATOR =',',
-			TABLOCK
-		);
+		SET @sql = N'BULK INSERT bronze.crm_cust_info FROM ''' + @base_path + N'source_crm\cust_info.csv''
+			WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);'
+		EXEC sp_executesql @sql
 
 		SET @end_time = GETDATE()
 
@@ -108,7 +114,7 @@ BEGIN
 		/*
 		=================================================================
 		Load Table: bronze.crm_prd_info
-		Source File: prd_info.csv
+		Source File: source_crm\prd_info.csv
 		=================================================================
 		*/
 
@@ -117,13 +123,9 @@ BEGIN
 		PRINT('PROCESSING LOAD RAW DATA TO TABLE...')
 		SET @start_time = GETDATE()
 
-		BULK INSERT bronze.crm_prd_info
-		FROM 'C:\Users\Lenovo\OneDrive\ドキュメント\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
-		WITH (
-			FIRSTROW = 2,
-			FIELDTERMINATOR =',',
-			TABLOCK
-		);
+		SET @sql = N'BULK INSERT bronze.crm_prd_info FROM ''' + @base_path + N'source_crm\prd_info.csv''
+			WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);'
+		EXEC sp_executesql @sql
 
 		SET @end_time = GETDATE()
 
@@ -136,7 +138,7 @@ BEGIN
 		/*
 		=================================================================
 		Load Table: bronze.crm_sales_details
-		Source File: sales_details.csv
+		Source File: source_crm\sales_details.csv
 		=================================================================
 		*/
 
@@ -145,13 +147,9 @@ BEGIN
 		PRINT('PROCESSING LOAD RAW DATA TO TABLE...')
 		SET @start_time = GETDATE()
 
-		BULK INSERT bronze.crm_sales_details
-		FROM 'C:\Users\Lenovo\OneDrive\ドキュメント\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
-		WITH (
-			FIRSTROW = 2,
-			FIELDTERMINATOR =',',
-			TABLOCK
-		);
+		SET @sql = N'BULK INSERT bronze.crm_sales_details FROM ''' + @base_path + N'source_crm\sales_details.csv''
+			WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);'
+		EXEC sp_executesql @sql
 
 		SET @end_time = GETDATE()
 
@@ -164,7 +162,7 @@ BEGIN
 		/*
 		=================================================================
 		Load Table: bronze.erp_cust_az12
-		Source File: CUST_AZ12.csv
+		Source File: source_erp\CUST_AZ12.csv
 		=================================================================
 		*/
 
@@ -173,13 +171,9 @@ BEGIN
 		PRINT('PROCESSING LOAD RAW DATA TO TABLE...')
 		SET @start_time = GETDATE()
 
-		BULK INSERT bronze.erp_cust_az12
-		FROM 'C:\Users\Lenovo\OneDrive\ドキュメント\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.csv'
-		WITH (
-			FIRSTROW = 2,
-			FIELDTERMINATOR =',',
-			TABLOCK
-		);
+		SET @sql = N'BULK INSERT bronze.erp_cust_az12 FROM ''' + @base_path + N'source_erp\CUST_AZ12.csv''
+			WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);'
+		EXEC sp_executesql @sql
 
 		SET @end_time = GETDATE()
 
@@ -192,7 +186,7 @@ BEGIN
 		/*
 		=================================================================
 		Load Table: bronze.erp_loc_a101
-		Source File: LOC_A101.csv
+		Source File: source_erp\LOC_A101.csv
 		=================================================================
 		*/
 
@@ -201,13 +195,9 @@ BEGIN
 		PRINT('PROCESSING LOAD RAW DATA TO TABLE...')
 		SET @start_time = GETDATE()
 
-		BULK INSERT bronze.erp_loc_a101
-		FROM 'C:\Users\Lenovo\OneDrive\ドキュメント\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
-		WITH (
-			FIRSTROW = 2,
-			FIELDTERMINATOR =',',
-			TABLOCK
-		);
+		SET @sql = N'BULK INSERT bronze.erp_loc_a101 FROM ''' + @base_path + N'source_erp\LOC_A101.csv''
+			WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);'
+		EXEC sp_executesql @sql
 
 		SET @end_time = GETDATE()
 
@@ -220,7 +210,7 @@ BEGIN
 		/*
 		=================================================================
 		Load Table: bronze.erp_px_cat_g1v2
-		Source File: PX_CAT_G1V2.csv
+		Source File: source_erp\PX_CAT_G1V2.csv
 		=================================================================
 		*/
 
@@ -229,13 +219,9 @@ BEGIN
 		PRINT('PROCESSING LOAD RAW DATA TO TABLE...')
 		SET @start_time = GETDATE()
 
-		BULK INSERT bronze.erp_px_cat_g1v2
-		FROM 'C:\Users\Lenovo\OneDrive\ドキュメント\Assignment\Non Academic\Course\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
-		WITH (
-			FIRSTROW = 2,
-			FIELDTERMINATOR =',',
-			TABLOCK
-		);
+		SET @sql = N'BULK INSERT bronze.erp_px_cat_g1v2 FROM ''' + @base_path + N'source_erp\PX_CAT_G1V2.csv''
+			WITH (FIRSTROW = 2, FIELDTERMINATOR = '','', TABLOCK);'
+		EXEC sp_executesql @sql
 
 		SET @end_time = GETDATE()
 
