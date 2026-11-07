@@ -87,14 +87,14 @@ BEGIN
 			cst_id,
 			cst_key,
 			cst_firstname,
-			cts_lastname,
+			cst_lastname,
 			cst_marital_status,
 			cst_gndr,
 			cst_create_date
 		)
 		SELECT cst_id, cst_key, 
 			TRIM(cst_firstname) AS cst_firstname, 
-			TRIM(cts_lastname) AS cts_lastname,
+			TRIM(cst_lastname) AS cst_lastname,
 			CASE TRIM(UPPER(cst_marital_status)) 
 				WHEN 'M' THEN 'Married'
 				WHEN 'S' THEN 'Single'
