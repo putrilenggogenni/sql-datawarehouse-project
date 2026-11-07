@@ -68,7 +68,7 @@ Data sengaja dibuat kotor supaya proses cleansing di Silver bermakna. Contohnya:
 **Prasyarat:** SQL Server dan SQL Server Management Studio (SSMS).
 
 1. Letakkan keenam file CSV di folder `dataset/` sesuai struktur di atas.
-2. Buka `scripts/bronze/proc_load_bronze.sql`, lalu **ubah path di setiap `BULK INSERT`** agar menunjuk ke lokasi folder `dataset/` di komputermu. Path harus bisa diakses oleh layanan SQL Server.
+2. Catat lokasi folder `dataset/` di komputermu (misalnya `C:\Projects\sql-datawarehouse-project\dataset\`). Path ini nanti dikirim sebagai parameter `@base_path`, jadi tidak perlu mengedit script. Folder harus bisa diakses oleh layanan SQL Server.
 3. Jalankan script berikut secara berurutan:
 
 ```sql
@@ -78,7 +78,7 @@ scripts/init_database.sql
 -- 2. Bronze
 scripts/bronze/ddl_bronze.sql
 scripts/bronze/proc_load_bronze.sql
-EXEC load_bronze;
+EXEC bronze.load_bronze @base_path = 'C:\Projects\sql-datawarehouse-project\dataset\';  -- ganti dengan path-mu
 
 -- 3. Silver
 scripts/silver/ddl_silver.sql
